@@ -26,11 +26,16 @@ module.exports = withPlugins(
 
             conf.node = {
                 fs: "empty"
+
             };
 
             conf.plugins.push(new webpack.EnvironmentPlugin(localEnv));
 
             return conf;
+        },
+        onDemandEntries: {
+            maxInactiveAge: 60 * 60 * 1000,
+            pagesBufferLength: 2
         }
     }
 );

@@ -4,6 +4,7 @@ import logo from '../../static/images/logo.svg';
 import configs from '../../configs/index';
 import Root from '../common/Root';
 import { updateUser } from '../../redux/actions/appActions';
+import { i18n, withTranslation } from '../../i18n';
 
 const dataDefaults = {
     name: 'Tommy Ai',
@@ -14,6 +15,10 @@ class Index extends Component {
 
     updateUser = (data) => {
         this.props.updateUser(data);
+    }
+
+    handleChangeLanguage = (item) => {
+        i18n.changeLanguage(item);
     }
 
     render() {
@@ -36,6 +41,11 @@ class Index extends Component {
                         >
                             Learn React
 				        </a>
+                        <div>{this.props.t("home")}</div>
+                        <div>
+                            <a className="link" onClick={() => this.handleChangeLanguage('en')}>EN</a>
+                            <a className="link" onClick={() => this.handleChangeLanguage('kr')}>KR</a>
+                        </div>
                         <div>{user.name}</div>
                         <div>{user.email}</div>
                         {
@@ -58,4 +68,4 @@ const mapDispatchToProps = dispatch => ({
     updateUser: data => dispatch(updateUser(data))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Index);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation('common')(Index));

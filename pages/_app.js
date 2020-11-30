@@ -3,6 +3,7 @@ import App, { Container } from 'next/app';
 import withRedux from 'next-redux-wrapper';
 import initStore from '../redux/store/store';
 import '../static/scss/style.scss';
+import { appWithTranslation } from '../i18n';
 
 class MyApp extends App {
 	static async getInitialProps({ Component, ctx }) {
@@ -28,4 +29,4 @@ class MyApp extends App {
 	}
 }
 
-export default withRedux(initStore, { debug: true })(MyApp);
+export default withRedux(initStore, { debug: false })(appWithTranslation(MyApp));
