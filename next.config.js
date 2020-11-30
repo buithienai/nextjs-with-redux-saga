@@ -1,41 +1,19 @@
-const withSass = require('@zeit/next-sass')
-const withCSS = require('@zeit/next-css');
-const withPlugins = require("next-compose-plugins");
-const { parsed: localEnv } = require("dotenv").config();
-const webpack = require("webpack");
-
-const plugins = [
-    withCSS,
-    withSass
-];
-
-module.exports = withPlugins(
-    [...plugins],
-    {
-        webpack: (config, { dev, isServer }) => {
-            const conf = config;
-            conf.module.rules.push({
-                test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
-                use: {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 100000
-                    }
-                }
-            });
-
-            conf.node = {
-                fs: "empty"
-
-            };
-
-            conf.plugins.push(new webpack.EnvironmentPlugin(localEnv));
-
-            return conf;
+module.exports = {
+  webpack(config, options) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: [
+        {
+          loader: '@svgr/webpack',
+          options: {
+            svgo: false, // Optimization caused bugs with some of my SVGs
+          },
         },
-        onDemandEntries: {
-            maxInactiveAge: 60 * 60 * 1000,
-            pagesBufferLength: 2
-        }
-    }
-);
+      ],
+    });
+    return config;
+  },
+  env: {
+    github: process.env.github,
+  }
+};
